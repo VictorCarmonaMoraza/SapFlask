@@ -5,6 +5,35 @@
     <title>Listado de Personas</title>
 </head>
 <body>
-<h1>Listado de Personas</h1>
+<h1>Sistema de Administracion de Personas</h1>
+    <div>
+        Total de personas: {{total_personasHTML}}
+    </div>
+    <br>
+    <div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <!--Cabeceras-->
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+
+            <!--Cuerpo-->
+            <tbody>
+                {%  for persona in personasHTML%}
+                <tr>
+                    <td>{{persona.id}}</td>
+                    <td>{{persona.nombre}}</td>
+                    <td>{{persona.apellido}}</td>
+                    <td>{{persona.email}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
