@@ -1,6 +1,9 @@
 from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from wtforms.validators import DataRequired
+from wtforms import StringField,SubmitField
 
 app = Flask(__name__)
 
@@ -24,6 +27,9 @@ db = SQLAlchemy(app)
 migrate =Migrate()
 migrate.init_app(app, db)
 
+#configuracion de flask-wtf
+app.config['SECRET_KEY']='llave_secreta'
+
 #Esto va a representar kla tabla en base de datos con sus columnas
 class Persona(db.Model):
     #atributos
@@ -40,6 +46,13 @@ class Persona(db.Model):
             f'Email: {self.email}'
         )
 
+class PersonaForm(FlaskForm):
+    nombre = StringField('Nombre',validators = [DataRequired()])
+    apellido = StringField('Apellido')
+    email =StringField('Email', validators = [DataRequired()])
+    enviar = SubmitField('Enviar')
+
+
 @app.route('/')
 @app.route('/index')
 @app.route('/index.html')
@@ -51,3 +64,14 @@ def inicio():
     app.logger.debug(f'Listado personas: {personas}')
     app.logger.debug(f'Total de personas: {total_personas}')
     return render_template('index.html',personasHTML = personas, total_personasHTML = total_personas)
+
+@app.route('/ver/<int:id>')
+def ver_detalle(id):
+    #Recuperamos la persona segun el id proporcionado
+    persona = Persona.query.get_or_404(id)
+    app.logger.debug(f'Ver persona: {persona}')
+    return render_template('detalle.html', personaId_HTML = persona )
+
+@app.route('/agregar', methods=['GET','POST'])
+def agregar():
+    persona =Persona()
