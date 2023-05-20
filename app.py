@@ -1,9 +1,9 @@
 from flask import Flask, render_template
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm
-from wtforms.validators import DataRequired
-from wtforms import StringField,SubmitField
+
+
+from database import db
+from models import Persona
 
 app = Flask(__name__)
 
@@ -20,8 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = FULL_URL_DB
 #Para rastrear las modifcaciones de los objetos
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-#Incicializacion del objeto db de sqlalchemy
-db = SQLAlchemy(app)
+db.init_app(app)
 
 #Configurar flask-migrate
 migrate =Migrate()
@@ -29,28 +28,6 @@ migrate.init_app(app, db)
 
 #configuracion de flask-wtf
 app.config['SECRET_KEY']='llave_secreta'
-
-#Esto va a representar kla tabla en base de datos con sus columnas
-class Persona(db.Model):
-    #atributos
-    id =db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(250))
-    apellido = db.Column(db.String(250))
-    email = db.Column(db.String(250))
-
-    def __str__(self):
-        return (
-            f'Id: {self.id}, '
-            f'Nombre: {self.nombre}, '
-            f'Apellido: {self.apellido}, '
-            f'Email: {self.email}'
-        )
-
-class PersonaForm(FlaskForm):
-    nombre = StringField('Nombre',validators = [DataRequired()])
-    apellido = StringField('Apellido')
-    email =StringField('Email', validators = [DataRequired()])
-    enviar = SubmitField('Enviar')
 
 
 @app.route('/')
