@@ -3,6 +3,7 @@ from flask_migrate import Migrate
 
 
 from database import db
+from forms import PersonaForm
 from models import Persona
 
 app = Flask(__name__)
@@ -51,4 +52,8 @@ def ver_detalle(id):
 
 @app.route('/agregar', methods=['GET','POST'])
 def agregar():
-    persona =Persona()
+    #Creacion de objeto Persona
+    persona = Persona()
+    #Creacion de objeto PersonaForm
+    personaForm = PersonaForm(obj = persona)
+    return render_template('agregar.html', personaFormHTML = personaForm)

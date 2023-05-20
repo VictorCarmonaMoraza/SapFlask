@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Persona</title>
+</head>
+<body>
+    <h1>Agregar Persona</h1>
+    <form method="POST">
+        {{personaFormHTML.csrf_token}}
+        <!--Campo Nombre-->
+        <p>
+            {{personaFormHTML.nombre.label}} <br/>
+            {{ personaFormHTML.nombre(size=30) }}
+        </p>
+
+        <!--Campo Apellido-->
+        <p>
+            {{personaFormHTML.apellido.label}} <br/>
+            {{personaFormHTML.apellido(size=30)}}
+        </p>
+
+        <!--Campo email-->
+        <p>
+            {{personaFormHTML.email.label}} <br/>
+            {{personaFormHTML.email(size=30)}}
+        </p>
+
+        <!--Boton de Envio-->
+        <p>
+            {{personaFormHTML.enviar()}}
+        </p>
+
+    </form>
+</body>
+</html>
