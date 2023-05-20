@@ -72,3 +72,14 @@ def agregar():
             #Redireccionamos a la pagina de inicio para ver el listado de personas
             return redirect(url_for('inicio'))
     return render_template('agregar.html', personaFormHTML = personaForm)
+
+@app.route('/editar/<int:id>', methods=['GET','POST'])
+def editar(id):
+    #Recuperamos el objeto persona a editar de BBDD por su id
+    persona = Persona.query.get_or_404(id)
+    #Asociamos el objeto persona a nuestro formulario
+    personaForma = PersonaForm(obj = persona)
+    nombrePersona =persona.nombre
+    return render_template('editar.html', personaEditarHTML = personaForma, personaEditarNombre = nombrePersona)
+
+
